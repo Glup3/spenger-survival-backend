@@ -1,9 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import { Tip } from './sequelize';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 const v1Prefix = '/api/v1';
 
