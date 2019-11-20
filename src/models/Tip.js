@@ -14,7 +14,7 @@ export default (sequelize, type) => {
       allowNull: false,
     },
     description: {
-      type: type.STRING,
+      type: type.STRING(1024),
       allowNull: false,
     },
     schoolClass: {
@@ -37,6 +37,10 @@ export default (sequelize, type) => {
     verified: {
       type: type.BOOLEAN,
       allowNull: false
+    },
+    gender: {
+      type: type.CHAR(1),
+      allowNull: true
     }
   });
 };

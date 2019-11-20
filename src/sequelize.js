@@ -10,7 +10,9 @@ const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.USERNAME,
 
 const Tip = TipModel(sequelize, Sequelize);
 
-sequelize.sync()
+sequelize.sync({
+  force: process.env.FORCE || false
+})
   .then(() => {
     console.log('Database & tables created.');
   });
