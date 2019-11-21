@@ -72,7 +72,7 @@ export const generateTips = (tips) => {
   const result = [];
 
   for (let i = 0; i < tips; i++) {
-    result.push(generateTip(Math.floor(Math.random() * 7), Math.floor(Math.random() * 50)));
+    result.push(generateTip(Math.floor(Math.random() * 7 + 1), Math.floor(Math.random() * 50 + 1)));
   }
 
   return result;
