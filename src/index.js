@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { Op, fn, col, where } from 'sequelize';
 
 import { Tip } from './sequelize';
 import { generateTips } from './util/dataGenerator';
@@ -11,8 +12,39 @@ app.use(cors());
 
 const v1Prefix = '/api/v1';
 
+const paginate = (query, { page, perPage }) => {
+  const offset = page * perPage;
+  const limit = perPage;
+
+  return {
+    ...query,
+    limit,
+    offset
+  };
+};
+
 app.get(v1Prefix + '/tips', (req, res) => {
-  Tip.findAll().then(tips => res.json(tips));
+  const page = parseInt(req.query.page) || 0;
+  const perPage = parseInt(req.query.perPage) || 15;
+  const searchTerm = req.query.q || '';
+
+  Tip.findAndCountAll(
+    paginate(
+      {
+        attributes: ['id', 'author', 'title', 'description', 'gender', 'schoolClass', 'department', 'issueDate', 'verified'],
+        where: {
+          [Op.or]: [
+            where(fn('lower', col('author')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
+            where(fn('lower', col('description')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
+          ]
+        }
+      },
+      {
+        page,
+        perPage
+      }
+    )
+  ).then(tips => res.json(tips));
 });
 
 app.post(v1Prefix + '/tips', (req, res) => {
@@ -37,9 +69,7 @@ app.post(v1Prefix + '/init-defaults', (req, res) => {
     where: {},
     truncate: true
   }).then(() => {
-    Tip.bulkCreate(
-      generateTips(req.body.tips || 20)
-    );
+    Tip.bulkCreate(generateTips(req.body.tips || 20));
   });
 
   res.json('Success');

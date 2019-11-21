@@ -17,14 +17,13 @@ export default (sequelize, type) => {
       type: type.STRING(1024),
       allowNull: false,
     },
+    gender: {
+      type: type.CHAR(1),
+      allowNull: true
+    },
     schoolClass: {
       type: type.STRING,
       allowNull: true,
-    },
-    //vintage == Schuljahr
-    vintage: {
-      type: type.INTEGER,
-      allowNull: false
     },
     department: {
       type: type.STRING,
@@ -38,9 +37,5 @@ export default (sequelize, type) => {
       type: type.BOOLEAN,
       allowNull: false
     },
-    gender: {
-      type: type.CHAR(1),
-      allowNull: true
-    }
   });
 };
