@@ -3,19 +3,19 @@ export default (sequelize, type) => {
     id: {
       type: type.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     author: {
       type: type.STRING,
-      allowNull: true
+      allowNull: false
     },
     title: {
       type: type.STRING,
-      allowNull: false,
+      allowNull: false
     },
     description: {
       type: type.STRING(1024),
-      allowNull: false,
+      allowNull: false
     },
     gender: {
       type: type.CHAR(1),
@@ -23,11 +23,11 @@ export default (sequelize, type) => {
     },
     schoolClass: {
       type: type.STRING,
-      allowNull: true,
+      allowNull: false
     },
     department: {
       type: type.STRING,
-      allowNull: true
+      allowNull: false
     },
     issueDate: {
       type: type.DATE,
@@ -36,6 +36,6 @@ export default (sequelize, type) => {
     verified: {
       type: type.BOOLEAN,
       allowNull: false
-    },
+    }
   });
 };

@@ -1,28 +1,28 @@
 const generateAuthor = () => {
-  const authors = [null, 'Glup3', 'Max', 'Melanie X', 'Max Mustermann', 'Ukalto'];
+  const authors = ['Anonym', 'Glup3', 'Max', 'Melanie X', 'Max Mustermann', 'Ukalto'];
 
   return authors[Math.floor(Math.random() * authors.length)];
 };
 
 const generateSchoolClass = () => {
-  const classes = [null, '5CHIF', '1FHIF', '3EHIF', '2AHMNG', '3BHWIT'];
+  const classes = ['Unbekannt', '5CHIF', '1FHIF', '3EHIF', '2AHMNG', '3BHWIT'];
 
   return classes[Math.floor(Math.random() * classes.length)];
 };
 
 const generateDepartment = () => {
-  const departments = [null, 'Informatik', 'Kunst und Design', 'Gamedesign', 'Biomedizin', 'Wirtschaft'];
+  const departments = ['Abteilungslos', 'Informatik', 'Kunst und Design', 'Gamedesign', 'Biomedizin', 'Wirtschaft'];
 
   return departments[Math.floor(Math.random() * departments.length)];
-}
+};
 
 const generateGender = () => {
   const genders = [null, 'm', 'w', '+'];
-  
-  return genders[Math.floor(Math.random() * genders.length)];
-}
 
-const randomBool = () => Math.random() > 0.5 ? true : false;
+  return genders[Math.floor(Math.random() * genders.length)];
+};
+
+const randomBool = () => (Math.random() > 0.5 ? true : false);
 
 const generateWord = length => {
   let result = '';
@@ -50,8 +50,6 @@ const generateDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
 
-
-
 export const generateTip = (wordsTitle, wordsDescription) => {
   const date = generateDate(new Date(2011, 1, 1), new Date());
 
@@ -65,9 +63,9 @@ export const generateTip = (wordsTitle, wordsDescription) => {
     verified: randomBool(),
     gender: generateGender()
   };
-}
+};
 
-export const generateTips = (tips) => {
+export const generateTips = tips => {
   const result = [];
 
   for (let i = 0; i < tips; i++) {
@@ -75,4 +73,4 @@ export const generateTips = (tips) => {
   }
 
   return result;
-}
+};
