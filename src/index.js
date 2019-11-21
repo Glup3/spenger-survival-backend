@@ -35,7 +35,10 @@ app.get(v1Prefix + '/tips', (req, res) => {
         where: {
           [Op.or]: [
             where(fn('lower', col('author')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
+            where(fn('lower', col('title')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
             where(fn('lower', col('description')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
+            where(fn('lower', col('schoolClass')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
+            where(fn('lower', col('department')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
           ]
         }
       },
