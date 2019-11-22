@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import axios from 'axios';
 import { Op, fn, col, where } from 'sequelize';
 
 import { Tip } from './sequelize';
@@ -38,7 +39,7 @@ app.get(v1Prefix + '/tips', (req, res) => {
             where(fn('lower', col('title')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
             where(fn('lower', col('description')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
             where(fn('lower', col('schoolClass')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
-            where(fn('lower', col('department')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
+            where(fn('lower', col('department')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' })
           ]
         },
         order: [['issueDate', 'DESC']]
@@ -52,7 +53,32 @@ app.get(v1Prefix + '/tips', (req, res) => {
 });
 
 app.post(v1Prefix + '/tips', (req, res) => {
-  Tip.create(req.body).then(tip => res.json(tip));
+  const captchaToken = req.body.captcha;
+  const verificationURL = 'https://www.google.com/recaptcha/api/siteverify?secret=' + process.env.GOOGLE_RECAPTCHA_SECRET + '&response=' + captchaToken;
+
+  axios
+    .post(verificationURL)
+    .then(response => {
+      console.log(response.data);
+
+      if (response.data.success !== undefined && !response.data.success) {
+        return res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
+      }
+
+      Tip.create({
+        author: req.body.author || 'Anonym',
+        title: req.body.title,
+        description: req.body.description,
+        schoolClass: req.body.schoolClass || 'Unbekannt',
+        department: req.body.department || 'Abteilungslos',
+        gender: req.body.gender,
+        issueDate: new Date(),
+        verified: false
+      }).then(tip => res.json(tip));
+    })
+    .catch(error => {
+      console.log(error);
+    });
 });
 
 app.get(v1Prefix + '/tips/:id', (req, res) => {
