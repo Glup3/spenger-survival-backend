@@ -6,15 +6,17 @@ const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.USERNAME,
   host: process.env.HOST,
   port: process.env.DATABASE_PORT,
   dialect: 'mysql',
+  logging: false
 });
 
 const Tip = TipModel(sequelize, Sequelize);
 
-sequelize.sync({
-  force: false
-})
+sequelize
+  .sync({
+    force: false
+  })
   .then(() => {
     console.log('Database & tables created.');
   });
 
-export { Tip }
+export { Tip };

@@ -40,7 +40,8 @@ app.get(v1Prefix + '/tips', (req, res) => {
             where(fn('lower', col('schoolClass')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
             where(fn('lower', col('department')), { [Op.like]: '%' + searchTerm.toLowerCase() + '%' }),
           ]
-        }
+        },
+        order: [['issueDate', 'DESC']]
       },
       {
         page,
