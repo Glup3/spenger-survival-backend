@@ -62,7 +62,7 @@ app.post(v1Prefix + '/tips', (req, res) => {
       console.log(response.data);
 
       if (response.data.success !== undefined && !response.data.success) {
-        return res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
+        return res.json({ responseCode: 400, responseDesc: 'Failed captcha verification' });
       }
 
       Tip.create({
@@ -74,7 +74,7 @@ app.post(v1Prefix + '/tips', (req, res) => {
         gender: req.body.gender,
         issueDate: new Date(),
         verified: false
-      }).then(tip => res.json(tip));
+      }).then(tip => res.json({ responseCode: 200, tip: tip }));
     })
     .catch(error => {
       console.log(error);
