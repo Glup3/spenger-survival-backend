@@ -22,9 +22,9 @@ const generateGender = () => {
   return genders[Math.floor(Math.random() * genders.length)];
 };
 
-const randomBool = () => (Math.random() > 0.5 ? true : false);
+const randomBool = () => Math.random() > 0.5;
 
-const generateWord = length => {
+const generateWord = (length: number) => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
@@ -36,21 +36,21 @@ const generateWord = length => {
   return result;
 };
 
-const generateText = words => {
+const generateText = (words: number) => {
   let result = '';
 
   for (let i = 0; i < words; i++) {
-    result += generateWord(Math.floor(Math.random() * 15)) + ' ';
+    result += `${generateWord(Math.floor(Math.random() * 15))} `;
   }
 
   return result;
 };
 
-const generateDate = (start, end) => {
+const generateDate = (start: Date, end: Date) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
 
-export const generateTip = (wordsTitle, wordsDescription) => {
+export const generateTip = (wordsTitle: number, wordsDescription: number) => {
   const date = generateDate(new Date(2011, 1, 1), new Date());
 
   return {
@@ -61,11 +61,11 @@ export const generateTip = (wordsTitle, wordsDescription) => {
     department: generateDepartment(),
     issueDate: date,
     verified: randomBool(),
-    gender: generateGender()
+    gender: generateGender(),
   };
 };
 
-export const generateTips = tips => {
+export const generateTips = (tips: number) => {
   const result = [];
 
   for (let i = 0; i < tips; i++) {
