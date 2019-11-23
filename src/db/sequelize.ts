@@ -9,7 +9,7 @@ const sequelize = new Sequelize({
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
   dialect: 'mysql',
-  logging: false,
+  logging: true,
   models: [`${__dirname}/**/*.model.ts`],
 });
 
