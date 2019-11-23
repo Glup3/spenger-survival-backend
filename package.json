@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run dev",
-    "dev": "ts-node-dev --respawn --transpileOnly -r dotenv/config ./src/index.ts",
+    "dev": "NODE_ENV=dev ts-node-dev --respawn --transpileOnly -r dotenv/config ./src/index.ts",
     "prod": "tsc -p .",
     "lint:check": "eslint \"src/**\""
   },

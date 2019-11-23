@@ -1,7 +1,7 @@
 import server from './server';
 import sequelize from './db/sequelize';
 
-require('dotenv').config();
+require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV}` });
 
 const port = process.env.PORT || 4000;
 

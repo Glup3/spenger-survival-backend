@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
-require('dotenv').config();
+const path = `${__dirname}/../../.env.${process.env.NODE_ENV}`;
+require('dotenv').config({ path });
 
 const sequelize = new Sequelize({
   host: process.env.HOST,
@@ -9,7 +10,7 @@ const sequelize = new Sequelize({
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
   dialect: 'mysql',
-  logging: true,
+  logging: false,
   models: [`${__dirname}/**/*.model.ts`],
 });
 
