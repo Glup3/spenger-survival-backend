@@ -12,6 +12,7 @@
   "author": "Phuc Tran",
   "license": "MIT",
   "dependencies": {
+    "@types/node-slack": "0.0.30",
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -19,6 +20,7 @@
     "express": "^4.17.1",
     "mysql": "^2.17.1",
     "mysql2": "^1.7.0",
+    "node-slack": "0.0.7",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.19.1",
     "sequelize-typescript": "^1.0.0",

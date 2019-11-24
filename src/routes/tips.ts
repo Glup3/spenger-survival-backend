@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import axios from 'axios';
+import Slack from 'node-slack';
 import { Op, where, fn, col } from 'sequelize';
 
 import Tip from '../db/models/Tip.model';
@@ -88,6 +89,21 @@ tips.post('/', async (req, res, next) => {
       gender: req.body.gender,
       issueDate: new Date(),
       verified: false,
+    });
+
+    res.sendStatus(200);
+  } catch (e) {
+    next(e);
+  }
+});
+
+tips.post('/report', async (req, res, next) => {
+  try {
+    const slack = new Slack(process.env.SLACK_WEBHOOK_URL);
+    slack.send({
+      text: `*${req.body.title} - ID #${req.body.id}* \n${req.body.message}`,
+      username: 'Reporting-BOT',
+      icon_emoji: 'zap',
     });
 
     res.sendStatus(200);
