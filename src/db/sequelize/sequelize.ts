@@ -16,4 +16,10 @@ const sequelize = new Sequelize({
 
 sequelize.addModels([Tip]);
 
-export default sequelize;
+const startConnection = async () => {
+  await sequelize.sync({
+    force: false,
+  });
+};
+
+export default startConnection;
