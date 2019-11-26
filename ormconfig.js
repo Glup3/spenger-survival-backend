@@ -1,5 +1,4 @@
-const path = `${__dirname}/../../.env.${process.env.NODE_ENV}`;
-require('dotenv').config({ path });
+require('dotenv').config();
 
 module.exports = {
   type: 'mysql',

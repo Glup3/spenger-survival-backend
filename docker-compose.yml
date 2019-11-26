@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=dev
+      - PORT=4000
+      - USERNAME=root
+      - PASSWORD=root
+      - DATABASE_NAME=spenger-survival
+      - HOST=db
+    env_file:
+      - .env
+    ports:
+      - '4001:4000'
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: mysql:5.7.28
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=spenger-survival
+    ports:
+      - '3307:3306'
