@@ -4,6 +4,7 @@ import cors from 'cors';
 import errorHandler from 'strong-error-handler';
 
 import tips from './routes/tips';
+import feedbacks from './routes/feedbacks';
 
 const server = express();
 
@@ -19,5 +20,6 @@ server.use(
 const v1Prefix = '/api/v1';
 
 server.use(`${v1Prefix}/tips`, tips);
+server.use(`${v1Prefix}/feedbacks`, feedbacks);
 
 export default server;

@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import axios from 'axios';
-import Slack from 'node-slack';
 
 import { searchTipsPaginated, addTip, initDefaultTips } from '../db/typeorm/logic';
+import { reportTip } from '../core/slack';
 
 const tips = Router();
 
@@ -42,13 +42,7 @@ tips.post('/', async (req, res, next) => {
 
 tips.post('/report', async (req, res, next) => {
   try {
-    const slack = new Slack(process.env.SLACK_WEBHOOK_URL);
-    slack.send({
-      text: `*${req.body.title} - ID #${req.body.id}* \n${req.body.message}`,
-      username: 'Reporting-BOT',
-      icon_emoji: 'zap',
-    });
-
+    reportTip(req.body.title, req.body.id, req.body.message);
     res.sendStatus(200);
   } catch (e) {
     next(e);
