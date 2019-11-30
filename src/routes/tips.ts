@@ -11,8 +11,9 @@ tips.get('/', async (req, res, next) => {
     const page: number = parseInt(req.query.page, 10) || 0;
     const perPage: number = parseInt(req.query.perPage, 10) || 15;
     const searchTerm: string = req.query.q || '';
+    const verified: string = req.query.verified || null;
 
-    res.json(await searchTipsPaginated(page, perPage, searchTerm));
+    res.json(await searchTipsPaginated(page, perPage, searchTerm, verified));
   } catch (e) {
     next(e);
   }

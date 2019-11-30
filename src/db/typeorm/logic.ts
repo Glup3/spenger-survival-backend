@@ -1,23 +1,30 @@
-import { getRepository } from 'typeorm';
+import { getRepository, Brackets } from 'typeorm';
 
 import Tip from './models/Tip.model';
 import { generateTips } from '../../util/dataGenerator';
 
-export const searchTipsPaginated = async (page: number, perPage: number, searchTerm: string) => {
-  const q = `%${searchTerm.toLowerCase()}%`;
+export const searchTipsPaginated = async (page: number, perPage: number, searchTerm: string, verified: string) => {
   const tipRepository = getRepository(Tip);
+  const verifiedExpression = verified != null ? 'verified = :verified' : 'verified is not :verified';
+  const q = `%${searchTerm.toLowerCase()}%`;
 
-  const result = await tipRepository
+  const query = tipRepository
     .createQueryBuilder()
-    .where('author like :q', { q })
-    .orWhere('title like :q', { q })
-    .orWhere('description like :q', { q })
-    .orWhere('schoolClass like :q', { q })
-    .orWhere('department like :q', { q })
+    .where(
+      new Brackets(qb => {
+        qb.where('author like :q', { q })
+          .orWhere('title like :q', { q })
+          .orWhere('description like :q', { q })
+          .orWhere('schoolClass like :q', { q })
+          .orWhere('department like :q', { q });
+      })
+    )
+    .andWhere(verifiedExpression, { verified })
     .orderBy('issueDate', 'DESC')
     .skip(page * perPage)
-    .take(perPage)
-    .getManyAndCount();
+    .take(perPage);
+
+  const result = await query.getManyAndCount();
 
   return {
     rows: result[0],
