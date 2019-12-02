@@ -8,7 +8,7 @@ import feedbacks from './routes/feedbacks';
 
 const server = express();
 
-server.disable('x-powered-by');
+server.set('x-powered-by', false);
 server.use(bodyParser.json());
 server.use(cors());
 server.use(
