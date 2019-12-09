@@ -1,6 +1,7 @@
 import { getRepository, Brackets } from 'typeorm';
 
 import Tip from './models/Tip.model';
+import Todo from './models/Todo.model';
 import { generateTips } from '../../util/dataGenerator';
 
 export const searchTipsPaginated = async (page: number, perPage: number, searchTerm: string, verified: string) => {
@@ -62,4 +63,30 @@ export const initDefaultTips = async (amount: number) => {
     .delete()
     .execute();
   await tipRepository.insert(generateTips(amount || 20));
+};
+
+export const getAllTodos = async (): Promise<Todo[]> => {
+  const todoRepository = getRepository(Todo);
+
+  return todoRepository
+    .createQueryBuilder()
+    .orderBy('done')
+    .addOrderBy('createdAt', 'DESC')
+    .getMany();
+};
+
+export const initDefaultTodos = async () => {
+  const todoRepository = getRepository(Todo);
+  await todoRepository
+    .createQueryBuilder()
+    .delete()
+    .execute();
+
+  await todoRepository.insert([
+    { title: 'Kategorien einbauen' },
+    { title: 'Suche entfernen' },
+    { title: 'TODO page' },
+    { title: 'Datum fixen' },
+    { title: 'Infinite Scrolling fixen' },
+  ]);
 };

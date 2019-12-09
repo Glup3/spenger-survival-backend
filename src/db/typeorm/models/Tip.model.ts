@@ -23,7 +23,7 @@ export default class Tip {
   @Column({ nullable: false })
   department: string;
 
-  @Column({ nullable: false, type: 'datetime' })
+  @Column({ nullable: false })
   issueDate: Date;
 
   @Column({ nullable: false })
