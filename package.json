@@ -2,6 +2,7 @@
   "name": "spenger-survival-backend",
   "version": "1.0.0",
   "description": "Backend for Spenger Survival",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "start": "npm run dev",
@@ -12,7 +13,6 @@
   "author": "Phuc Tran",
   "license": "MIT",
   "dependencies": {
-    "@types/node-slack": "0.0.30",
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -33,14 +33,20 @@
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.2",
     "@types/node": "^12.12.12",
+    "@types/node-slack": "0.0.30",
     "@types/sequelize": "^4.28.1",
     "@types/validator": "^10.11.3",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
-    "eslint": "^6.7.0",
+    "@typescript-eslint/parser": "^2.11.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-typescript": "^6.3.0",
     "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "prettier": "^1.19.1",
     "ts-node-dev": "^1.0.0-pre.44"
   }
