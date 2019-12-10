@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import Category from './Category.model';
 
 @Entity()
 export default class Tip {
@@ -28,4 +29,10 @@ export default class Tip {
 
   @Column({ nullable: false })
   verified: boolean;
+
+  @ManyToOne(
+    type => Category,
+    category => category.tips
+  )
+  category: Category;
 }

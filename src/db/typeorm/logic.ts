@@ -3,6 +3,7 @@ import { getRepository, Brackets } from 'typeorm';
 import Tip from './models/Tip.model';
 import Todo from './models/Todo.model';
 import { generateTips } from '../../util/dataGenerator';
+import Category from './models/Category.model';
 
 export const searchTipsPaginated = async (page: number, perPage: number, searchTerm: string, verified: string) => {
   const tipRepository = getRepository(Tip);
@@ -88,5 +89,29 @@ export const initDefaultTodos = async () => {
     { title: 'TODO page' },
     { title: 'Datum fixen' },
     { title: 'Infinite Scrolling fixen' },
+  ]);
+};
+
+export const getAllCategories = async (): Promise<Category[]> => {
+  const categoryRepository = getRepository(Category);
+
+  return categoryRepository
+    .createQueryBuilder()
+    .orderBy('name', 'ASC')
+    .getMany();
+};
+
+export const initDefaultCategories = async () => {
+  const categoryRepository = getRepository(Category);
+  await categoryRepository
+    .createQueryBuilder()
+    .delete()
+    .execute();
+
+  await categoryRepository.insert([
+    { name: 'Lerntipps', description: 'Tipps zum Lernen', color: '#00FFAA' },
+    { name: 'Essen', description: 'Food', color: '#44FF33' },
+    { name: 'Schummeln', description: 'Hehe xd', color: '#55CCBB' },
+    { name: 'Sonstiges', description: 'Alles andere', color: '#1111AA' },
   ]);
 };
