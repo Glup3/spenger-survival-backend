@@ -15,6 +15,7 @@ interface SearchTipsPaginatedArgs {
   gender: string;
   category: string;
   schoolClass: string;
+  author: string;
 }
 
 export const searchTipsPaginated = async ({
@@ -27,6 +28,7 @@ export const searchTipsPaginated = async ({
   gender,
   category,
   schoolClass,
+  author,
 }: SearchTipsPaginatedArgs) => {
   const tipRepository = getRepository(Tip);
   const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
@@ -35,6 +37,7 @@ export const searchTipsPaginated = async ({
   let departmentExpression = 'department is null';
   let genderExpression = 'gender is null';
   let schoolClassExpression = 'schoolClass is null';
+  let authorExpression = 'author is null';
 
   if (department != null) {
     departmentExpression = department === '' ? '1=1' : 'department = :d';
@@ -46,6 +49,10 @@ export const searchTipsPaginated = async ({
 
   if (schoolClass != null) {
     schoolClassExpression = schoolClass === '' ? '1=1' : 'schoolClass = :s';
+  }
+
+  if (author != null) {
+    authorExpression = author === '' ? '1=1' : 'author = :a';
   }
 
   // const q = `%${searchTerm.toLowerCase()}%`;
@@ -63,6 +70,7 @@ export const searchTipsPaginated = async ({
     // .where('author like :q', { q })
     // .orWhere('title like :q', { q })
     .where(categoryExpression, { c: category })
+    .andWhere(authorExpression, { a: author })
     .andWhere(departmentExpression, { d: department })
     .andWhere(genderExpression, { g: gender })
     .andWhere(verifiedExpression, { v: verified })
@@ -169,5 +177,16 @@ export const getAllSchoolClasses = async () => {
     .select('schoolClass')
     .groupBy('schoolClass')
     .orderBy('schoolClass', 'ASC')
+    .execute();
+};
+
+export const getAllAuthors = async () => {
+  const tipRepository = getRepository(Tip);
+
+  return tipRepository
+    .createQueryBuilder()
+    .select('author')
+    .groupBy('author')
+    .orderBy('author', 'ASC')
     .execute();
 };

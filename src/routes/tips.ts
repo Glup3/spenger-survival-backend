@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import axios from 'axios';
 
-import { searchTipsPaginated, addTip, initDefaultTips, getAllSchoolClasses } from '../db/typeorm/logic';
+import { searchTipsPaginated, addTip, initDefaultTips, getAllSchoolClasses, getAllAuthors } from '../db/typeorm/logic';
 import { reportTip } from '../core/slack';
 
 const tips = Router();
@@ -14,9 +14,28 @@ tips.get('/classes', async (req, res, next) => {
   }
 });
 
+tips.get('/authors', async (req, res, next) => {
+  try {
+    res.json(await getAllAuthors());
+  } catch (e) {
+    next(e);
+  }
+});
+
 tips.post('/', async (req, res, next) => {
   try {
-    const { page, perPage, searchTerm, verified, department, gender, category, orderBy, schoolClass } = req.body;
+    const {
+      page,
+      perPage,
+      searchTerm,
+      verified,
+      department,
+      gender,
+      category,
+      orderBy,
+      schoolClass,
+      author,
+    } = req.body;
 
     res.json(
       await searchTipsPaginated({
@@ -29,6 +48,7 @@ tips.post('/', async (req, res, next) => {
         gender,
         category: category || null,
         schoolClass,
+        author,
       })
     );
   } catch (e) {
