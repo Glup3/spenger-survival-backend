@@ -8,6 +8,7 @@ import Category from './models/Category.model';
 interface SearchTipsPaginatedArgs {
   page: number;
   perPage: number;
+  orderBy: 'ASC' | 'DESC';
   searchTerm: string;
   verified: string;
   department: string;
@@ -18,6 +19,7 @@ interface SearchTipsPaginatedArgs {
 export const searchTipsPaginated = async ({
   page,
   perPage,
+  orderBy,
   // searchTerm,
   verified,
   department,
@@ -57,7 +59,7 @@ export const searchTipsPaginated = async ({
     .andWhere(departmentExpression, { d: `%${department}%` })
     .andWhere(genderExpression, { g: `%${gender}%` })
     .andWhere(verifiedExpression, { v: verified })
-    .orderBy('issueDate', 'DESC')
+    .orderBy('issueDate', orderBy)
     .skip(page * perPage)
     .take(perPage);
 
