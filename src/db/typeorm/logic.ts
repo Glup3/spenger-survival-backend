@@ -22,7 +22,7 @@ export const searchTipsPaginated = async ({
   page,
   perPage,
   orderBy,
-  // searchTerm,
+  searchTerm,
   verified,
   department,
   gender,
@@ -31,6 +31,7 @@ export const searchTipsPaginated = async ({
   author,
 }: SearchTipsPaginatedArgs) => {
   const tipRepository = getRepository(Tip);
+  const q = `%${searchTerm.toLowerCase()}%`;
   const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
   const categoryExpression = category != null ? 'categoryId = :c' : '1=1';
 
@@ -55,21 +56,14 @@ export const searchTipsPaginated = async ({
     authorExpression = author === '' ? '1=1' : 'author = :a';
   }
 
-  // const q = `%${searchTerm.toLowerCase()}%`;
-
   const query = tipRepository
     .createQueryBuilder()
-    // .where(
-    //   new Brackets(qb => {
-    //     qb.where('author like :q', { q });
-    //     //     .orWhere('title like :q', { q })
-    //     //     .orWhere('description like :q', { q })
-    //     //     .orWhere('schoolClass like :q', { q });
-    //   })
-    // )
-    // .where('author like :q', { q })
-    // .orWhere('title like :q', { q })
     .where(categoryExpression, { c: category })
+    .andWhere(
+      new Brackets(qb => {
+        qb.where('title like :q', { q }).orWhere('description like :q', { q });
+      })
+    )
     .andWhere(authorExpression, { a: author })
     .andWhere(departmentExpression, { d: department })
     .andWhere(genderExpression, { g: gender })
