@@ -18,7 +18,7 @@ tips.post('/', async (req, res, next) => {
         verified,
         department,
         gender,
-        category: category ? parseInt(category, 10) : null,
+        category: category || null,
       })
     );
   } catch (e) {

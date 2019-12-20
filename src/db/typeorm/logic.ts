@@ -12,7 +12,7 @@ interface SearchTipsPaginatedArgs {
   verified: string;
   department: string;
   gender: string;
-  category: number;
+  category: string;
 }
 
 export const searchTipsPaginated = async ({
