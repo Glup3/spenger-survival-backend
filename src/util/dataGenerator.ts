@@ -7,7 +7,7 @@ const generateAuthor = () => {
 };
 
 const generateSchoolClass = () => {
-  const classes = ['Unbekannt', '5CHIF', '1FHIF', '3EHIF', '2AHMNG', '3BHWIT'];
+  const classes = [null, '5CHIF', '1FHIF', '3EHIF', '2AHMNG', '3BHWIT', '1AHMNG', '2AHKUI', '4EHIF', '1DHIF'];
 
   return classes[Math.floor(Math.random() * classes.length)];
 };

@@ -14,6 +14,7 @@ interface SearchTipsPaginatedArgs {
   department: string;
   gender: string;
   category: string;
+  schoolClass: string;
 }
 
 export const searchTipsPaginated = async ({
@@ -25,6 +26,7 @@ export const searchTipsPaginated = async ({
   department,
   gender,
   category,
+  schoolClass,
 }: SearchTipsPaginatedArgs) => {
   const tipRepository = getRepository(Tip);
   const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
@@ -32,13 +34,18 @@ export const searchTipsPaginated = async ({
 
   let departmentExpression = 'department is null';
   let genderExpression = 'gender is null';
+  let schoolClassExpression = 'schoolClass is null';
 
   if (department != null) {
-    departmentExpression = department === '' ? '1=1' : 'department like :d';
+    departmentExpression = department === '' ? '1=1' : 'department = :d';
   }
 
   if (gender != null) {
-    genderExpression = gender === '' ? '1=1' : 'gender like :g';
+    genderExpression = gender === '' ? '1=1' : 'gender = :g';
+  }
+
+  if (schoolClass != null) {
+    schoolClassExpression = schoolClass === '' ? '1=1' : 'schoolClass = :s';
   }
 
   // const q = `%${searchTerm.toLowerCase()}%`;
@@ -56,9 +63,10 @@ export const searchTipsPaginated = async ({
     // .where('author like :q', { q })
     // .orWhere('title like :q', { q })
     .where(categoryExpression, { c: category })
-    .andWhere(departmentExpression, { d: `%${department}%` })
-    .andWhere(genderExpression, { g: `%${gender}%` })
+    .andWhere(departmentExpression, { d: department })
+    .andWhere(genderExpression, { g: gender })
     .andWhere(verifiedExpression, { v: verified })
+    .andWhere(schoolClassExpression, { s: schoolClass })
     .orderBy('issueDate', orderBy)
     .skip(page * perPage)
     .take(perPage);
@@ -151,4 +159,15 @@ export const initDefaultCategories = async () => {
     { name: 'Schummeln', description: 'Hehe xd', color: '#55CCBB' },
     { name: 'Sonstiges', description: 'Alles andere', color: '#1111AA' },
   ]);
+};
+
+export const getAllSchoolClasses = async () => {
+  const tipRepository = getRepository(Tip);
+
+  return tipRepository
+    .createQueryBuilder()
+    .select('schoolClass')
+    .groupBy('schoolClass')
+    .orderBy('schoolClass', 'ASC')
+    .execute();
 };
