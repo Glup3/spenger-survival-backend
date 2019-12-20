@@ -27,6 +27,7 @@ export const searchTipsPaginated = async ({
   const tipRepository = getRepository(Tip);
   const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
   const categoryExpression = category != null ? 'categoryId = :c' : '1=1';
+
   let departmentExpression = 'department is null';
   let genderExpression = 'gender is null';
 
@@ -39,8 +40,6 @@ export const searchTipsPaginated = async ({
   }
 
   // const q = `%${searchTerm.toLowerCase()}%`;
-
-  console.log(page, perPage);
 
   const query = tipRepository
     .createQueryBuilder()
@@ -55,7 +54,7 @@ export const searchTipsPaginated = async ({
     // .where('author like :q', { q })
     // .orWhere('title like :q', { q })
     .where(categoryExpression, { c: category })
-    // .andWhere(departmentExpression, { d: `%${department}%` })
+    .andWhere(departmentExpression, { d: `%${department}%` })
     .andWhere(genderExpression, { g: `%${gender}%` })
     .andWhere(verifiedExpression, { v: verified })
     .orderBy('issueDate', 'DESC')
