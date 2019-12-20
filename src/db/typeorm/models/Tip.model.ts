@@ -18,10 +18,10 @@ export default class Tip {
   @Column({ nullable: true, type: 'char', length: 1 })
   gender: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   schoolClass: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   department: string;
 
   @Column({ nullable: false })

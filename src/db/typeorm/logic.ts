@@ -5,9 +5,29 @@ import Todo from './models/Todo.model';
 import { generateTips } from '../../util/dataGenerator';
 import Category from './models/Category.model';
 
-export const searchTipsPaginated = async (page: number, perPage: number, searchTerm: string, verified: string) => {
+interface SearchTipsPaginatedArgs {
+  page: number;
+  perPage: number;
+  searchTerm: string;
+  verified: string;
+  department: string;
+}
+
+export const searchTipsPaginated = async ({
+  page,
+  perPage,
+  searchTerm,
+  verified,
+  department,
+}: SearchTipsPaginatedArgs) => {
   const tipRepository = getRepository(Tip);
-  const verifiedExpression = verified != null ? 'verified = :verified' : 'verified is not :verified';
+
+  const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
+  let departmentExpression = 'department is null';
+  if (department != null) {
+    departmentExpression = department === '' ? '1=1' : 'department like :d';
+  }
+
   const q = `%${searchTerm.toLowerCase()}%`;
 
   const query = tipRepository
@@ -17,11 +37,11 @@ export const searchTipsPaginated = async (page: number, perPage: number, searchT
         qb.where('author like :q', { q })
           .orWhere('title like :q', { q })
           .orWhere('description like :q', { q })
-          .orWhere('schoolClass like :q', { q })
-          .orWhere('department like :q', { q });
+          .orWhere('schoolClass like :q', { q });
       })
     )
-    .andWhere(verifiedExpression, { verified })
+    .andWhere(departmentExpression, { d: `%${department}%` })
+    .andWhere(verifiedExpression, { v: verified })
     .orderBy('issueDate', 'DESC')
     .skip(page * perPage)
     .take(perPage);

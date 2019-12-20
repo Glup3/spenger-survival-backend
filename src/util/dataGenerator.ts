@@ -11,7 +11,7 @@ const generateSchoolClass = () => {
 };
 
 const generateDepartment = () => {
-  const departments = ['Abteilungslos', 'Informatik', 'Kunst und Design', 'Gamedesign', 'Biomedizin', 'Wirtschaft'];
+  const departments = [null, 'Informatik', 'Kunst und Design', 'Gamedesign', 'Biomedizin', 'Wirtschaft'];
 
   return departments[Math.floor(Math.random() * departments.length)];
 };

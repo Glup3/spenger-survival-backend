@@ -6,20 +6,25 @@ import { reportTip } from '../core/slack';
 
 const tips = Router();
 
-tips.get('/', async (req, res, next) => {
+tips.post('/', async (req, res, next) => {
   try {
-    const page: number = parseInt(req.query.page, 10) || 0;
-    const perPage: number = parseInt(req.query.perPage, 10) || 15;
-    const searchTerm: string = req.query.q || '';
-    const verified: string = req.query.verified || null;
+    const { page, perPage, searchTerm, verified, department } = req.body;
 
-    res.json(await searchTipsPaginated(page, perPage, searchTerm, verified));
+    res.json(
+      await searchTipsPaginated({
+        page,
+        perPage,
+        searchTerm: searchTerm || '',
+        verified,
+        department,
+      })
+    );
   } catch (e) {
     next(e);
   }
 });
 
-tips.post('/', async (req, res, next) => {
+tips.post('/add', async (req, res, next) => {
   try {
     const { author, title, description, schoolClass, department, gender, captcha } = req.body;
 
@@ -56,7 +61,7 @@ tips.post('/init', async (req, res, next) => {
       return;
     }
 
-    initDefaultTips(req.body.tips);
+    initDefaultTips(req.body.amount);
 
     res.sendStatus(200);
   } catch (e) {
