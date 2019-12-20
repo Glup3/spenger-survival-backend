@@ -12,18 +12,21 @@ interface SearchTipsPaginatedArgs {
   verified: string;
   department: string;
   gender: string;
+  category: number;
 }
 
 export const searchTipsPaginated = async ({
   page,
   perPage,
-  searchTerm,
+  // searchTerm,
   verified,
   department,
   gender,
+  category,
 }: SearchTipsPaginatedArgs) => {
   const tipRepository = getRepository(Tip);
   const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
+  const categoryExpression = category != null ? 'categoryId = :c' : '1=1';
   let departmentExpression = 'department is null';
   let genderExpression = 'gender is null';
 
@@ -35,19 +38,24 @@ export const searchTipsPaginated = async ({
     genderExpression = gender === '' ? '1=1' : 'gender like :g';
   }
 
-  const q = `%${searchTerm.toLowerCase()}%`;
+  // const q = `%${searchTerm.toLowerCase()}%`;
+
+  console.log(page, perPage);
 
   const query = tipRepository
     .createQueryBuilder()
-    .where(
-      new Brackets(qb => {
-        qb.where('author like :q', { q })
-          .orWhere('title like :q', { q })
-          .orWhere('description like :q', { q })
-          .orWhere('schoolClass like :q', { q });
-      })
-    )
-    .andWhere(departmentExpression, { d: `%${department}%` })
+    // .where(
+    //   new Brackets(qb => {
+    //     qb.where('author like :q', { q });
+    //     //     .orWhere('title like :q', { q })
+    //     //     .orWhere('description like :q', { q })
+    //     //     .orWhere('schoolClass like :q', { q });
+    //   })
+    // )
+    // .where('author like :q', { q })
+    // .orWhere('title like :q', { q })
+    .where(categoryExpression, { c: category })
+    // .andWhere(departmentExpression, { d: `%${department}%` })
     .andWhere(genderExpression, { g: `%${gender}%` })
     .andWhere(verifiedExpression, { v: verified })
     .orderBy('issueDate', 'DESC')

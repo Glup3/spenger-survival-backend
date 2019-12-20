@@ -1,3 +1,5 @@
+import Category from '../db/typeorm/models/Category.model';
+
 const generateAuthor = () => {
   const authors = ['Anonym', 'Glup3', 'Max', 'Melanie X', 'Max Mustermann', 'Ukalto'];
 

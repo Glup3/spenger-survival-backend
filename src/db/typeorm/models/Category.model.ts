@@ -17,7 +17,7 @@ export default class Category {
   color: string;
 
   @OneToMany(
-    type => Tip,
+    () => Tip,
     tip => tip.category
   )
   tips: Tip[];

@@ -8,7 +8,7 @@ const tips = Router();
 
 tips.post('/', async (req, res, next) => {
   try {
-    const { page, perPage, searchTerm, verified, department, gender } = req.body;
+    const { page, perPage, searchTerm, verified, department, gender, category } = req.body;
 
     res.json(
       await searchTipsPaginated({
@@ -18,6 +18,7 @@ tips.post('/', async (req, res, next) => {
         verified,
         department,
         gender,
+        category: category ? parseInt(category, 10) : null,
       })
     );
   } catch (e) {

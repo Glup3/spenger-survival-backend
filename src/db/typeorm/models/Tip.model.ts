@@ -31,7 +31,7 @@ export default class Tip {
   verified: boolean;
 
   @ManyToOne(
-    type => Category,
+    () => Category,
     category => category.tips
   )
   category: Category;
