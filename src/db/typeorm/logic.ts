@@ -11,6 +11,7 @@ interface SearchTipsPaginatedArgs {
   searchTerm: string;
   verified: string;
   department: string;
+  gender: string;
 }
 
 export const searchTipsPaginated = async ({
@@ -19,13 +20,19 @@ export const searchTipsPaginated = async ({
   searchTerm,
   verified,
   department,
+  gender,
 }: SearchTipsPaginatedArgs) => {
   const tipRepository = getRepository(Tip);
-
   const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
   let departmentExpression = 'department is null';
+  let genderExpression = 'gender is null';
+
   if (department != null) {
     departmentExpression = department === '' ? '1=1' : 'department like :d';
+  }
+
+  if (gender != null) {
+    genderExpression = gender === '' ? '1=1' : 'gender like :g';
   }
 
   const q = `%${searchTerm.toLowerCase()}%`;
@@ -41,6 +48,7 @@ export const searchTipsPaginated = async ({
       })
     )
     .andWhere(departmentExpression, { d: `%${department}%` })
+    .andWhere(genderExpression, { g: `%${gender}%` })
     .andWhere(verifiedExpression, { v: verified })
     .orderBy('issueDate', 'DESC')
     .skip(page * perPage)
