@@ -46,7 +46,7 @@ tips.post('/', async (req, res, next) => {
         verified,
         department,
         gender,
-        category: category || null,
+        category,
         schoolClass,
         author,
       })

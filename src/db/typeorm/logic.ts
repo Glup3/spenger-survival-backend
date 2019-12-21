@@ -33,12 +33,12 @@ export const searchTipsPaginated = async ({
   const tipRepository = getRepository(Tip);
   const q = `%${searchTerm.toLowerCase()}%`;
   const verifiedExpression = verified != null ? 'verified = :v' : 'verified is not :v';
-  const categoryExpression = category != null ? 'categoryId = :c' : '1=1';
 
   let departmentExpression = 'department is null';
   let genderExpression = 'gender is null';
   let schoolClassExpression = 'schoolClass is null';
   let authorExpression = 'author is null';
+  let categoryExpression = 'categoryId is null';
 
   if (department != null) {
     departmentExpression = department === '' ? '1=1' : 'department = :d';
@@ -54,6 +54,10 @@ export const searchTipsPaginated = async ({
 
   if (author != null) {
     authorExpression = author === '' ? '1=1' : 'author = :a';
+  }
+
+  if (category != null) {
+    categoryExpression = category === '' ? '1=1' : 'categoryId = :c';
   }
 
   const query = tipRepository
