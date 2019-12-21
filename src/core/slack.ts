@@ -32,6 +32,13 @@ const resolveMessageType = (messageType: string): MessageType => {
         header: 'Bug Report',
         icon: 'bug',
       };
+    case 'category':
+      return {
+        botname: 'Category Request BOT',
+        channel: '#category',
+        header: 'Category Request',
+        icon: 'turtle',
+      };
     default:
       return {
         botname: 'Sonstiges BOT',
