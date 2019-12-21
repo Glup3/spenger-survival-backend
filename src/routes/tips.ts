@@ -58,7 +58,7 @@ tips.post('/', async (req, res, next) => {
 
 tips.post('/add', async (req, res, next) => {
   try {
-    const { author, title, description, schoolClass, department, gender, captcha } = req.body;
+    const { author, title, description, schoolClass, department, gender, category, captcha } = req.body;
 
     const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GOOGLE_RECAPTCHA_SECRET}&response=${captcha}`;
 
@@ -69,7 +69,7 @@ tips.post('/add', async (req, res, next) => {
       return;
     }
 
-    await addTip(title, description, gender, author, schoolClass, department);
+    await addTip(title, description, gender, author, schoolClass, department, category);
 
     res.sendStatus(200);
   } catch (e) {

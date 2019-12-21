@@ -89,22 +89,28 @@ export const addTip = async (
   title: string,
   description: string,
   gender: string,
-  author?: string,
-  schoolClass?: string,
-  department?: string
+  author: string,
+  schoolClass: string,
+  department: string,
+  category: string
 ) => {
   const tipRepository = getRepository(Tip);
 
-  await tipRepository.insert({
-    author: author || 'Anonym',
-    title,
-    description,
-    schoolClass: schoolClass || 'Unbekannt',
-    department: department || 'Abteilungslos',
-    gender,
-    issueDate: new Date(),
-    verified: false,
-  });
+  await tipRepository
+    .createQueryBuilder()
+    .insert()
+    .values({
+      author,
+      title,
+      description,
+      schoolClass,
+      department,
+      gender,
+      issueDate: new Date(),
+      verified: false,
+      category: () => category,
+    })
+    .execute();
 };
 
 export const initDefaultTips = async (amount: number) => {
