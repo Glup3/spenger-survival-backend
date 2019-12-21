@@ -61,11 +61,12 @@ export const searchTipsPaginated = async ({
   }
 
   const query = tipRepository
-    .createQueryBuilder()
+    .createQueryBuilder('tip')
+    .leftJoinAndSelect('tip.category', 'category')
     .where(categoryExpression, { c: category })
     .andWhere(
       new Brackets(qb => {
-        qb.where('title like :q', { q }).orWhere('description like :q', { q });
+        qb.where('title like :q', { q }).orWhere('tip.description like :q', { q });
       })
     )
     .andWhere(authorExpression, { a: author })
@@ -73,7 +74,7 @@ export const searchTipsPaginated = async ({
     .andWhere(genderExpression, { g: gender })
     .andWhere(verifiedExpression, { v: verified })
     .andWhere(schoolClassExpression, { s: schoolClass })
-    .orderBy('issueDate', orderBy)
+    .orderBy('tip.issueDate', orderBy)
     .skip(page * perPage)
     .take(perPage);
 
